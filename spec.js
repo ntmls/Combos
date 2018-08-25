@@ -23,6 +23,19 @@ var areArraysEqual = function(list1, list2) {
     return unequal.length === 0;
 };
 
+var removeItem = function(index, array) {
+    var result = [];
+    var count = 0;
+    var len = array.length;
+    for (var i=0; i<len; i++) {
+        if (i != index) {
+            result[count] = array[i];
+            count += 1;
+        }
+    }
+    return result;
+};
+
 var expand = function(template) {
     var cols = template.length;
     var colRange = range(0, cols-1);
@@ -53,6 +66,28 @@ var expand = function(template) {
     return result;
 };
 
+var permutations = function(list) {
+    var len = list.length;
+    var results = [];
+    if (len === 1) {
+        return list;
+    } else {
+        for (var i=0; i<len; i++) {
+            var value = list[i];
+            var next = removeItem(i, list);
+            var perms = permutations(next);
+            var jlen = perms.length;
+            for (var j=0; j<jlen; j++) {
+                var result = [value];
+                result = result.concat(perms[j]);
+                results.push(result);
+            }
+        }
+        return results;
+    }
+    
+};
+
 var vals = [true, false];
 var template = range(1,8).map((x)=>vals);
 console.log(template);
@@ -67,3 +102,7 @@ var invariant = function(row) {
 var validStates = possible.filter(invariant);
 console.log(validStates);
 console.log('Valid States: ' + validStates.length);
+
+var nums = [1,2,3];
+var nums2 = permutations(nums);
+console.log(nums2);
