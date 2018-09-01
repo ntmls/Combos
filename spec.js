@@ -88,6 +88,40 @@ var permutations = function(list) {
     
 };
 
+var indexPairs = function(count) {
+    return indexNWise(count, 2);
+}
+
+var indexTriples = function(count) {
+    return indexNWise(count, 3);
+}
+
+var indexNWise = function(count, wise) {
+    var template = [];
+    for (var i=0; i<wise; i++) {
+        template.push(range(0, count - 1));
+    }
+    var cs = expand(template);
+    
+    // A pair must not have the same two values
+    // A pair sould not depend on order. It must not be represented twice
+    var filter = function(t) {
+        if ( !isSequential(t, wise) ) { return false; }
+        return true;
+    }
+    return cs.filter(filter);
+};
+    
+var isSequential = function(ar, length) {
+    var lastValue = ar[0];
+    for (var i=1; i<length; i++) {
+        if (lastValue >= ar[i]) { return false; }
+        lastValue = ar[i];
+    }
+    return true;
+};
+    
+
 var vals = [true, false];
 var template = range(1,8).map((x)=>vals);
 console.log(template);
@@ -106,3 +140,9 @@ console.log('Valid States: ' + validStates.length);
 var nums = [1,2,3];
 var nums2 = permutations(nums);
 console.log(nums2);
+
+var pairs = indexPairs(3);
+console.log(pairs);
+
+var triples = indexTriples(3);
+console.log(triples);
